@@ -1,12 +1,15 @@
-var uuid = require('node-uuid');
-var mongoose = require('mongoose');
-var bson = require('bson');
-var should = require('chai').should();
-var Schema = mongoose.Schema;
+const uuid = require('node-uuid'),
+      mongoose = require('mongoose'),
+      bson = require('bson'),
+      should = require('chai').should(),
+      Schema = mongoose.Schema,
+      mongoose_uuid = require('../index')(mongoose);
+
+
 // Will add the UUID type to the Mongoose Schema types
-require('../index')(mongoose);
 var UUID = mongoose.Types.UUID;
 
+// Create schema for tets to use. 
 var ProductSchema = Schema({
   _id: { type: UUID, default: uuid.v4 },
   name: String
@@ -26,6 +29,14 @@ describe('mongoose-uuid', function(){
     Product.remove({}, function() {
       mongoose.disconnect(cb);
     });
+  });
+
+  it("should fail to cast a null or undefined value",function(){
+    var product = new Product({
+      _id: {type: UUID, default: null},
+      name: "Get Schwifty"
+    });
+    var x = "y";
   });
 
   it('should cast uuid strings to binary', function(){

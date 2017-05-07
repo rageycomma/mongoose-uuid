@@ -51,10 +51,6 @@ SchemaUUID.prototype.cast = function (value, doc, init) {
   if (mongoose.SchemaType._isRef(this, value, doc, init)) {
     // wait! we may need to cast this to a document
 
-    if (value === null || value === undefined) {
-      return value;
-    }
-
     if (value instanceof Document) {
       value.$__.wasPopulated = true;
       return value;
